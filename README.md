@@ -125,7 +125,7 @@ Se activa el modo `format="json"` de Ollama junto con el esquema exacto en el pr
    ```
 2. Instalar las librerías de Python necesarias:
    ```bash
-   pip install scrapling ollama
+   pip install -r requirements.txt
    ```
 
 ### Ejemplos de uso por consola
@@ -150,5 +150,5 @@ python abrir_correo.py "Petroprix"
 **Ángel Miranda Molina**  
 *Estudiante de 2º de DAM (Desarrollo de Aplicaciones Multiplataforma)*  
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Ángel_Miranda-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/%C3%A1ngel-miranda-75966b344/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Angel_Miranda-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/%C3%A1ngel-miranda-75966b344/)
 [![GitHub](https://img.shields.io/badge/GitHub-@Angeell04-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Angeell04)
