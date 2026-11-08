@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🤖 AI Job Matcher & Smart CRM — Automatización con IA Local
+# AI Job Matcher & Smart CRM — Automatización con IA Local
 ### **Búsqueda, Filtrado Racional de Ofertas y Gestión de Candidaturas FCT en Obsidian**
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Estado-🟢_En_Uso_Real_(Búsqueda_FCT)-10B981?style=for-the-badge" alt="Estado" />
+  <img src="https://img.shields.io/badge/Estado-En_Uso_Real_(Búsqueda_FCT)-10B981?style=for-the-badge" alt="Estado" />
   <img src="https://img.shields.io/badge/Enfoque-AI_Engineering_%26_Vibe_Coding-6366F1?style=for-the-badge" alt="Enfoque" />
   <img src="https://img.shields.io/badge/Coste_API-0€_(100%25_Local)-F59E0B?style=for-the-badge" alt="100% Local" />
 </p>
@@ -33,41 +33,43 @@
 
 **Herramienta de uso personal creada para automatizar la búsqueda y evaluación de empresas tecnológicas (Jaén, Granada y Málaga) de cara a mis prácticas de 2º de DAM. Combina Web Scraping con evasión de bloqueos, evaluación mediante un modelo de IA local en Ollama y generación automática de fichas y correos para Gmail.**
 
-[Metodología (IA + Vibe Coding)](#-1-metodología-conocimientos-de-ia--desarrollo-asistido) • [Cómo Funciona](#-2-arquitectura-y-flujo-de-trabajo) • [Decisiones Técnicas de IA](#-3-decisiones-técnicas-aplicadas-al-modelo-local) • [Estructura de Scripts](#-4-estructura-del-proyecto) • [Límites Reales](#-5-límites-actuales-y-realismo-técnico) • [Uso](#-6-guía-de-ejecución)
+[Metodología (IA + Vibe Coding)](#1-metodología-conocimientos-de-ia--desarrollo-asistido) • [Cómo Funciona](#2-arquitectura-y-flujo-de-trabajo) • [Decisiones Técnicas de IA](#3-decisiones-técnicas-aplicadas-al-modelo-local) • [Estructura de Scripts](#4-estructura-del-proyecto) • [Límites Reales](#5-límites-actuales-y-realismo-técnico) • [Uso](#6-guía-de-ejecución)
 
 </div>
+
 ---
+
 > [!NOTE]
-> ### 💡 Filosofía de Desarrollo & AI-Assisted Engineering
+> ### Filosofía de Desarrollo & AI-Assisted Engineering
 > *"Tenía claros los conceptos de IA (tokens, temperatura, prompts estructurados y modelos locales con Ollama) y el problema real que quería resolver. Utilicé la IA como 'pair programmer' para descubrir e integrar librerías en Python como Scrapling y construir este pipeline de automatización paso a paso."*
 
 ---
 
-## 🧠 1. Metodología: Conocimientos de IA + Desarrollo Asistido
+## 1. Metodología: Conocimientos de IA + Desarrollo Asistido
 
-Este proyecto es mi primer sistema completo construido combinando **mis conocimientos previos sobre Inteligencia Artificial** con **programación asistida por IA (*Vibe Coding* guiado)**:
+Este proyecto es mi primer sistema completo construido combinando **mis conocimientos previos sobre Inteligencia Artificial** con **programación asistida por IA (Vibe Coding guiado)**:
 
-- **Dirección y Criterio Técnico (Mi aportación):** Habiendo estudiado por mi cuenta cómo funcionan los LLMs por dentro, definí la arquitectura del sistema, el diseño del *System Prompt* (el evaluador `"jeb"`), el control de la **ventana de contexto** para evitar alucinaciones, el ajuste de la **temperatura** para obtener respuestas racionales y la exigencia de salidas estructuradas en **JSON** ejecutándose 100% en local con **Ollama**.
-- **Descubrimiento de Librerías e Implementación (Asistencia IA):** Utilicé la IA como copiloto técnico para aprender a implementar librerías específicas de Python que no conocía (`Scrapling` para saltar protecciones Cloudflare, `urllib.parse` para codificar enlaces de correo y `argparse` para crear comandos de terminal), iterando y validando cada bloque de código hasta entender su funcionamiento completo.
+- **Dirección y Criterio Técnico (Mi aportación):** Habiendo estudiado por mi cuenta cómo funcionan los LLMs por dentro, definí la arquitectura del sistema, el diseño del System Prompt (el evaluador "jeb"), el control de la **ventana de contexto** para evitar alucinaciones, el ajuste de la **temperatura** para obtener respuestas racionales y la exigencia de salidas estructuradas en **JSON** ejecutándose 100% en local con **Ollama**.
+- **Descubrimiento de Librerías e Implementación (Asistencia IA):** Utilicé la IA como copiloto técnico para aprender a implementar librerías específicas de Python que no conocía (Scrapling para saltar protecciones Cloudflare, urllib.parse para codificar enlaces de correo y argparse para crear comandos de terminal), iterando y validando cada bloque de código hasta entender su funcionamiento completo.
 
 ---
 
-## 🔄 2. Arquitectura y Flujo de Trabajo
+## 2. Arquitectura y Flujo de Trabajo
 
 ```mermaid
 flowchart TD
-    A["🌐 Web de Empresa o Portal (Tecnoempleo)"] -->|1. Extracción HTML| B["🕷️ Scrapling\n(StealthyFetcher + Fallback Fetcher)"]
-    B -->|2. Limpieza y recorte [:7000] chars| C["🧠 Ollama Local (qwen2.5-coder:7b)\nEvaluador 'Jeb' (Temp: 0.15 | JSON)"]
+    A["Web de Empresa o Portal (Tecnoempleo)"] -->|1. Extracción HTML| B["Scrapling\n(StealthyFetcher + Fallback Fetcher)"]
+    B -->|2. Limpieza y recorte a 7000 caracteres| C["Ollama Local (qwen2.5-coder:7b)\nEvaluador Jeb (Temp: 0.15 | JSON)"]
     C -->|3. Calcula Score 0-100%| D{"¿Score >= 60%?"}
-    D -->|No encaja con 2º DAM| E["❌ Se descarta en consola"]
-    D -->|Sí encaja| F["📝 Crea Ficha .md de la Empresa\n(02_Personal/Empresas/Provincia/)"]
-    F --> G["📊 Actualiza Tabla en README_CRM_Empresas.md\n(Comprobando antes que no esté duplicada)"]
-    F --> H["✉️ Genera Enlace Directo a Gmail\n(Con Asunto y Carta personalizada lista)"]
+    D -->|No encaja con 2º DAM| E["Descarte en consola"]
+    D -->|Sí encaja| F["Crea Ficha .md de la Empresa\n(02_Personal/Empresas/Provincia/)"]
+    F --> G["Actualiza Tabla en README_CRM_Empresas.md\n(Comprobando antes que no esté duplicada)"]
+    F --> H["Genera Enlace Directo a Gmail\n(Con Asunto y Carta personalizada lista)"]
 ```
 
 ---
 
-## ⚙️ 3. Decisiones Técnicas Aplicadas al Modelo Local
+## 3. Decisiones Técnicas Aplicadas al Modelo Local
 
 Para que un modelo local de 7 mil millones de parámetros (`qwen2.5-coder:7b`) funcione como un filtro fiable y no falle, se aplicaron cuatro mecanismos clave en el código:
 
@@ -85,11 +87,11 @@ Se activa el modo `format="json"` de Ollama junto con el esquema exacto en el pr
 
 ### 4. Doble Fetcher contra Bloqueos (`StealthyFetcher` + `Fetcher`)
 - Primero intenta acceder con `StealthyFetcher(solve_cloudflare=True)`, que levanta un navegador camuflado capaz de superar las protecciones anti-bot de Cloudflare.
-- Si por algún motivo el navegador da error o *timeout*, el código cuenta con un bloque de respaldo (*fallback*) que utiliza `Fetcher.get()` para realizar una petición HTTP ligera tradicional.
+- Si por algún motivo el navegador da error o timeout, el código cuenta con un bloque de respaldo (fallback) que utiliza `Fetcher.get()` para realizar una petición HTTP ligera tradicional.
 
 ---
 
-## 📂 4. Estructura del Proyecto
+## 4. Estructura del Proyecto
 
 ```text
 ├── empresa_matcher.py      # Motor central: Scraping, evaluación con Ollama, creación de fichas .md y edición del CRM
@@ -100,13 +102,13 @@ Se activa el modo `format="json"` de Ollama junto con el esquema exacto en el pr
 └── evaluar_malaga.py       # Script de escaneo automático de ofertas tecnológicas en la provincia de Málaga
 ```
 
-### ¿Cómo funciona la actualización del CRM y el botón de Gmail?
+### Funcionamiento de la actualización del CRM y el botón de Gmail
 - **Actualización de tablas sin duplicados (`actualizar_dashboard_crm`):** El script lee el archivo `README_CRM_Empresas.md` como texto plano. Primero comprueba con un condicional si la ruta de la empresa ya existe en el documento para no repetirla. Si es nueva, localiza mediante `.split()` el encabezado de la provincia correspondiente (`## 📍 Jaén`, `## 📍 Granada` o `## 📍 Málaga`) e inserta la nueva fila justo antes del cierre de la tabla (`---`).
 - **Borrador de Gmail sin usar APIs ni contraseñas:** Aprovecha los parámetros de URL de redacción de Google (`https://mail.google.com/mail/?view=cm&fs=1&to=...&su=...&body=...`). Usando `urllib.parse.urlencode`, inyecta el correo de RRHH, el asunto y la carta de motivación directamente en el enlace para abrirlo en un clic en el navegador.
 
 ---
 
-## ⚠️ 5. Límites Actuales y Realismo Técnico
+## 5. Límites Actuales y Realismo Técnico
 
 1. **Búsqueda de listas acoplada a Tecnoempleo:** La función `scrapear_ofertas_tecnoempleo()` busca selectores CSS específicos del HTML de ese portal (`div.p-3`, `h3 a`). En portales cerrados que exigen login obligatorio o tienen anti-scraping agresivo (como LinkedIn o InfoJobs), la búsqueda masiva por listas no funciona directamente.
 2. **Evaluación individual (`--url`) universal:** Cuando se le pasa la URL directa de la web de cualquier empresa, el script utiliza selectores genéricos (`h1, h2, p, li`), por lo que puede analizar casi cualquier página corporativa pública.
@@ -114,7 +116,7 @@ Se activa el modo `format="json"` de Ollama junto con el esquema exacto en el pr
 
 ---
 
-## 🚀 6. Guía de Ejecución
+## 6. Guía de Ejecución
 
 ### Requisitos previos
 1. Tener [Ollama](https://ollama.com/) instalado con el modelo descargado:
@@ -143,7 +145,7 @@ python abrir_correo.py "Petroprix"
 
 ---
 
-## 👤 Autor
+## Autor
 
 **Ángel Miranda Molina**  
 *Estudiante de 2º de DAM (Desarrollo de Aplicaciones Multiplataforma)*  
